@@ -7,12 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
-function get_dic ($path) {
-    $file = file_get_contents($path);
-    $file = json_decode($file)->translation;
-    return $file;
-}
+use Utils\Helpers;
 
 class I18nTranslationsSeeder extends Seeder
 {
@@ -24,12 +19,12 @@ class I18nTranslationsSeeder extends Seeder
         $keys = I18n::all()->pluck('key')->toArray();
 
         $app_path = str_replace('\\', '/', app_path());
-        $files = glob($app_path . '/../database/seeders/data/*.json');
+        $files = glob($app_path . '/../database/seeders/i18n/*.json');
 
         foreach($files as $file) {
             if (str_contains($file, 'i18n_keys.json')) continue;
 
-            $dict = get_dic($file);
+            $dict = Helpers::get_json($file)->translation;
             $filename = pathinfo($file)['filename'];
 
             foreach($keys as &$key) {

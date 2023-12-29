@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Utils\Helpers;
 
-class I18nSeeder extends Seeder
+class PhotoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,13 +17,14 @@ class I18nSeeder extends Seeder
     public function run(): void
     {
         $app_path = str_replace('\\', '/', app_path());
-        $keys = Helpers::get_json(
-            $app_path . '/../database/seeders/i18n/i18n_keys.json'
-        );
+        $photos = Helpers::get_json($app_path . '/../database/seeders/data/photos.json');
 
-        foreach ($keys as &$key) {
-            DB::table('i18n')->insert([
-                'key' => $key,
+        foreach($photos as &$photo) {
+            $pathinfo = pathinfo($photo);
+
+            DB::table('assets')->insert([
+                'key' => $pathinfo['filename'],
+                'src' => Storage::url('photo/' . $photo),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
