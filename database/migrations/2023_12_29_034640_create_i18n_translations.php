@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('i18n_key');
             $table->foreign('i18n_key')->references('key')->on('i18n')->onDelete('cascade');
             $table->string('locale', 18);
-            $table->string('message');
+            $table->text('message');
             $table->timestamps();
         });
     }
