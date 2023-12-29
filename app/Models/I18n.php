@@ -36,4 +36,5 @@ class I18n extends Model
      * @var string
      */
     protected $keyType = 'string';
+    protected $hidden = ['updated_at', 'created_at'];
 }
